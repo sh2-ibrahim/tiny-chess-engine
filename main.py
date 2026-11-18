@@ -2,7 +2,7 @@ import json,os,urllib.request as u
 V=[0,100,320,330,500,900,0]
 N=[33,31,18,14,-14,-18,-31,-33]
 B=[15,17,-15,-17];F=[1,-1,16,-16];D=B+F
-X=[0];O=25000;K={};I=99999
+X=[0];O=35000;K={};I=99999
 class Q(Exception):pass
 def W(m):
  f=m&127;t=m>>7&127;return chr(97+(f&7))+str(1+(f>>4))+chr(97+(t&7))+str(1+(t>>4))+" pnbrqk"[m>>14].strip()
