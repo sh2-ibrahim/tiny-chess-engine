@@ -2,7 +2,7 @@ import json,os,urllib.request as u
 V=[0,100,320,330,500,900,0]
 N=[33,31,18,14,-14,-18,-31,-33]
 B=[15,17,-15,-17];F=[1,-1,16,-16];D=B+F
-X=[0];O=25000;K={};I=99999
+X=[0];O=25000;I=99999
 class Q(Exception):pass
 def W(m):
  f=m&127;t=m>>7&127;return chr(97+(f&7))+str(1+(f>>4))+chr(97+(t&7))+str(1+(t>>4))+" pnbrqk"[m>>14].strip()
@@ -71,7 +71,12 @@ def E(b,s):
   if a<2:t+=g*(8*(r if p>0 else 7-r)+3-abs(f-3))
   elif a<4:t+=(6-a)*c*g
   elif a>4:t+=(c if a==5 else h*c)*g
- return (t+25*(b.count(3)>1)-25*(b.count(-3)>1))*s
+ for q in (1,-1):
+  k=b.index(6*q)
+  for o in (15,16,17):
+   z=k+o*q
+   if 0<=z<128 and b[z]==q:t+=20*q
+ return t*s
 def C(b,m):
  f=m&127;t=m>>7&127;return 10*V[abs(b[t] or (abs(b[f])==1 and f&7!=t&7))]+500*(m>>14)-5*abs(b[f])
 def S(b,s,a,e,d,al,be,pl):
@@ -88,14 +93,12 @@ def S(b,s,a,e,d,al,be,pl):
  ms=L(b,s,a,e)
  if not ms:return -9999+pl if k or d>0 and A(b,b.index(6*s),-s) else 0
  if d<=0 and not k:ms=[z for z in ms if C(b,z[0])>0]
- ms.sort(key=lambda z:(-C(b,z[0])-8000*(z[0]==K.get(pl)),z[0]))
+ ms.sort(key=lambda z:(-C(b,z[0]),z[0]))
  bs=-I
  for m,n,na,ne in ms:
   v=-S(n,-s,na,ne,d-1,-be,-al,pl+1)
   bs=max(bs,v);al=max(al,v)
-  if al>=be:
-   if C(b,m)<1:K[pl]=m
-   break
+  if al>=be:break
  return bs if d>0 else al
 def H(g):
  b,s,a,e=P(g["fen"]);Lg=g["legal_moves"]
