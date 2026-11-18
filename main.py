@@ -82,16 +82,16 @@ def C(b,m):
 def S(b,s,a,e,d,al,be,pl):
  X[0]+=1
  if X[0]>O:raise Q
- k=0
+ k=A(b,b.index(6*s),-s)
  if d<=0:
   if pl>16:return E(b,s)
-  k=A(b,b.index(6*s),-s)
   if not k:
    st=E(b,s)
    if st>=be:return be
    al=max(al,st)
+ if k and pl<24:d+=1
  ms=L(b,s,a,e)
- if not ms:return -9999+pl if k or d>0 and A(b,b.index(6*s),-s) else 0
+ if not ms:return -9999+pl if k else 0
  if d<=0 and not k:ms=[z for z in ms if C(b,z[0])>0]
  ms.sort(key=lambda z:(-C(b,z[0])-8000*(z[0]==K.get(pl)),z[0]))
  bs=-I
