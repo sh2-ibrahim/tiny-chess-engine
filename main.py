@@ -2,7 +2,7 @@ import json,os,urllib.request as u
 V=[0,100,320,330,500,900,0]
 N=[33,31,18,14,-14,-18,-31,-33]
 B=[15,17,-15,-17];F=[1,-1,16,-16];D=B+F
-X=[0];O=12000;K={};I=99999
+X=[0];O=25000;K={};I=99999
 class Q(Exception):pass
 def W(m):
  f=m&127;t=m>>7&127;return chr(97+(f&7))+str(1+(f>>4))+chr(97+(t&7))+str(1+(t>>4))+" pnbrqk"[m>>14].strip()
@@ -12,8 +12,8 @@ def P(f):
   if ch=="/":i-=24
   elif ch.isdigit():i+=int(ch)
   else:b[i]=("pnbrqk".index(ch.lower())+1)*((ch<"a")*2-1);i+=1
- s=1 if w[1]=="w" else -1;e=w[3]
- return b,s,sum(1<<i for i,ch in enumerate("KQkq") if ch in w[2]),(ord(e[1])-49)*16+ord(e[0])-97 if e!="-" else -1
+ s=1-2*(w[1]=="b");e=w[3]
+ return b,s,sum(1<<i for i,ch in enumerate("KQkq") if ch in w[2]),16*ord(e[1])+ord(e[0])-881 if e!="-" else -1
 def A(b,s,y):
  for Z,p in (((-15*y,-17*y),1),(N,2),(D,6)):
   for o in Z:
@@ -57,7 +57,7 @@ def Y(b,m,s,a):
  if abs(q)==1 and not n[t] and f&7!=t&7:n[t-16*s]=0
  n[t]=p*s if p else q
  if abs(q)==6 and abs((f&7)-(t&7))==2:
-  d=1 if t>f else -1;v=f+3*d-(d<0);n[f+d]=n[v];n[v]=0
+  d=(t>f)*2-1;v=f+3*d-(d<0);n[f+d]=n[v];n[v]=0
  for x,k in ((4,3),(7,1),(0,2),(116,12),(119,4),(112,8)):
   if x in (f,t):a&=~k
  return n,a,f+16*s if abs(q)==1 and abs(t-f)==32 else -1
@@ -79,6 +79,7 @@ def S(b,s,a,e,d,al,be,pl):
  if X[0]>O:raise Q
  k=0
  if d<=0:
+  if pl>16:return E(b,s)
   k=A(b,b.index(6*s),-s)
   if not k:
    st=E(b,s)
@@ -87,13 +88,13 @@ def S(b,s,a,e,d,al,be,pl):
  ms=L(b,s,a,e)
  if not ms:return -9999+pl if k or d>0 and A(b,b.index(6*s),-s) else 0
  if d<=0 and not k:ms=[z for z in ms if C(b,z[0])>0]
- ms.sort(key=lambda z:(-C(b,z[0])-8000*(d>0 and z[0]==K.get(pl)),z[0]))
+ ms.sort(key=lambda z:(-C(b,z[0])-8000*(z[0]==K.get(pl)),z[0]))
  bs=-I
  for m,n,na,ne in ms:
   v=-S(n,-s,na,ne,d-1,-be,-al,pl+1)
   bs=max(bs,v);al=max(al,v)
   if al>=be:
-   if d>0 and C(b,m)<1:K[pl]=m
+   if C(b,m)<1:K[pl]=m
    break
  return bs if d>0 else al
 def H(g):
@@ -101,7 +102,7 @@ def H(g):
  ms=[z for z in L(b,s,a,e) if W(z[0]) in Lg]
  if len(ms)<2:return W(ms[0][0]) if ms else sorted(Lg)[0]
  ms.sort(key=lambda z:(-C(b,z[0]),z[0]))
- X[0]=0;K.clear();bm=ms[0][0]
+ X[0]=0;bm=ms[0][0]
  for d in range(1,9):
   try:
    al=-I;cm=bm;cs=-I
@@ -109,7 +110,7 @@ def H(g):
     v=-S(n,-s,na,ne,d-1,-I,-al,1)
     if v>cs:cs=v;cm=m
     al=max(al,v)
-   bm=cm;ms.sort(key=lambda z:(z[0]!=bm,z[0]))
+   bm=cm;ms.sort(key=lambda z:(z[0]!=bm,-C(b,z[0]),z[0]))
   except Q:break
  return W(bm)
 def R(p,o):
